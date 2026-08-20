@@ -1,3 +1,4 @@
+from kivy.clock import Clock
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
@@ -6,6 +7,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.image import Image
 from kivy.utils import platform
 
+import threading
 import json
 import urllib.request
 import urllib.error
@@ -76,6 +78,18 @@ class OSCANApp(App):
         if not product_name:
             self.label.text = "Please enter product name!"
             return
+
+    def save_to_supabase(self, instance):
+       product_name = self.input_name.text.strip()
+       if not product_name:
+        self.label.text = "الرجاء إدخال اسم المنتج"
+        return
+        self.label.text = "جارٍ الحفظ..."
+        threading.Thread(
+        target=self._save_to_supabase_worker,
+        args=(product_name,),
+        daemon=True,
+           ).start()
 
         try:
             url = f"{SUPABASE_URL}/rest/v1/products"
