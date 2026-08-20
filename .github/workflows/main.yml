@@ -10,28 +10,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout Repository
+      uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
+    - name: Build APK with Buildozer Action
+      uses: ArtemSydoryk/buildozer-action@v1.2.1
       with:
-        python-version: '3.11'
+        command: buildozer -v android debug
+        submodule: false
 
-    - name: Install dependencies
-      run: |
-        sudo apt-get update -y || true
-        sudo apt-get install -y --no-install-recommends \
-          build-essential libffi-dev python3-dev ffmpeg \
-          libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-mix-dev \
-          libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev \
-          zlib1g-dev openjdk-17-jdk zip unzip
-        pip install --upgrade pip setuptools buildozer cython
-
-    - name: Build APK with Buildozer
-      run: |
-        buildozer -v android debug
-
-    - name: Upload APK Package
+    - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
       with:
         name: OSCAN-APK
