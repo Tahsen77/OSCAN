@@ -13,15 +13,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Fix Directory Permissions
+      - name: Set Permissions & Setup Directory
         run: |
-          chmod -R 777 .
+          sudo chmod -R 777 .
+          mkdir -p .buildozer
 
-      - name: Build APK using Official Buildozer Docker Container
+      - name: Build APK with Docker
         run: |
           docker run --rm \
             -v ${{ github.workspace }}:/home/user/hostpython \
-            -e BUILDOZER_WARN_ON_ROOT=0 \
+            -w /home/user/hostpython \
+            -e BUILDOZER_ACCEPT_SDK_LICENSES=1 \
             kivy/buildozer android debug
 
       - name: Upload APK Artifact
