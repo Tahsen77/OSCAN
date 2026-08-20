@@ -2,19 +2,6 @@ name: Build Android APK
 
 on:
   push:
-    branches: [ "mainThis error occurs because `kivy/buildozer-action` is either an invalid repository path, non-existent, or private on GitHub Actions. Kivy does not maintain an official GitHub Action under the `kivy/` organization name.
-
-To build Kivy Android applications using Buildozer in GitHub Actions, use community-maintained, actively supported actions such as `ArtemShtepenko/buildozer-action` or `action-buildozer`.
-
-Here is a complete, working GitHub Actions workflow (`.github/workflows/build.yml`) using `ArtemShtepenko/buildozer-action`:
-
-```yaml
-name: Build Kivy APK
-
-on:
-  push:
-    branches: [ "main", "master" ]
-  pull_request:
     branches: [ "main", "master" ]
   workflow_dispatch:
 
@@ -36,5 +23,5 @@ jobs:
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: package
+          name: OSCAN-APK
           path: ${{ steps.buildozer.outputs.filename }}
